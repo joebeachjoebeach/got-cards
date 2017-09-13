@@ -1,0 +1,14 @@
+.hand {
+	display: flex;
+	flex-wrap: wrap;
+	height: 50%;
+	justify-content: center;
+	width: 100%;
+}
+
+	.hand-button {
+		border: 1px solid black;
+		border-radius: 4px;
+		height: 40px;
+		width: 100px;
+	}

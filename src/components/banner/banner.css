@@ -1,0 +1,16 @@
+.banner {
+	align-items: center;
+	background-color: #555;
+	display: flex;
+	height: 45px;
+	justify-content: space-between;
+	width: 100%;
+}
+
+	.banner-round {
+		margin: 0 0 0 5px;
+	}
+
+	.banner-score {
+		margin: 0 5px 0 0;
+	}
