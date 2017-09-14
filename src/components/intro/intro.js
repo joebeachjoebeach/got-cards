@@ -1,40 +1,67 @@
 import React from 'react';
 import './intro.css';
-import swImg from '../../images/sw-small.png';
-import gotImg from '../../images/got-small.png';
 
-const Intro = ({ chooseTeam }) => {
+const Intro = ({ handleChooseHouse }) => {
 
-	function onGoTClick() {
-		chooseTeam('got');
+	function onHouseClick(id) {
+		return function() {
+			handleChooseHouse(id);
+		};
 	}
-
-	function onSWClick() {
-		chooseTeam('sw');
-	}
+	
 
 	return (
 		<div className="modal">
 			<div className="modal-content">
-				<h3>Choose a team</h3>
+				<h3>Choose a House</h3>
 				<div className="modal-content-teamchoice">
 					<button
 						className="modal-content-teamchoice-button"
-						onClick={onGoTClick}
+						onClick={onHouseClick('7')}
 					>
-						<img
-							alt="Game of Thrones logo"
-							src={gotImg}
-						/>
+						Arryn
 					</button>
 					<button
 						className="modal-content-teamchoice-button"
-						onClick={onSWClick}
+						onClick={onHouseClick('17')}
 					>
-						<img
-							alt="Star Wars logo"
-							src={swImg}
-						/>
+						Baratheon
+					</button>
+					<button
+						className="modal-content-teamchoice-button"
+						onClick={onHouseClick('229')}
+					>
+						Lannister
+					</button>
+					<button
+						className="modal-content-teamchoice-button"
+						onClick={onHouseClick('285')}
+					>
+						Martell
+					</button>
+					<button
+						className="modal-content-teamchoice-button"
+						onClick={onHouseClick('362')}
+					>
+						Stark
+					</button>
+					<button
+						className="modal-content-teamchoice-button"
+						onClick={onHouseClick('378')}
+					>
+						Targaryen
+					</button>
+					<button
+						className="modal-content-teamchoice-button"
+						onClick={onHouseClick('395')}
+					>
+						Tully
+					</button>
+					<button
+						className="modal-content-teamchoice-button"
+						onClick={onHouseClick('398')}
+					>
+						Tyrell
 					</button>
 				</div>
 			</div>

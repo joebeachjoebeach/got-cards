@@ -12,7 +12,6 @@ const Card = ({ data }) => {
 		info = `Appears in ${films.length.toString()}/7 films.`;
 	}
 	else {
-		let aliases;
 		({ name, books } = data);
 		score = (books.length / 5) * 100;
 		info = `Appears in ${books.length.toString()}/5 books.`;
