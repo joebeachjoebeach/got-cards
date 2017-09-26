@@ -28,21 +28,6 @@ export function randomInt(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-
-// unused?
-export function mapCards(data, key) {
-	// Star Wars:
-	if (data.films) {
-		const { name, films } = data;
-		return { key, name, films };
-	}
-	// Game of Thrones:
-	else {
-		const { name, books } = data;
-		return { key, name, books };
-	}
-}
-
 export function getTeamName(teamId) {
 	if (teamId === '7') {
 		return 'arryn';
