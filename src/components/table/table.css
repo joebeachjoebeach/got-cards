@@ -1,4 +1,7 @@
 .table {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
 	height: 33%;
 	margin: 10px 0 0 0;
 	width: 100%;
@@ -8,4 +11,9 @@
 		display: flex;
 		height: 90%;
 		justify-content: center;
+		width: 100%;
+	}
+
+	.table-results {
+		font-size: 0.8em;
 	}

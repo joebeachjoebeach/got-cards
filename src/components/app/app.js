@@ -35,13 +35,16 @@ class App extends React.Component {
 			const promises = characters.map(character => getCharacter(character));
 			// once all promises are resolved, process the data
 			Promise.all(promises).then(data => {
-				const cards = data.map(({ url, name, books, aliases }) => {
+				const cards = data.map(({ url, name, books, povBooks, aliases }) => {
 					if (name === '') {
 						name = aliases[0];
 					}
 					let id = url.match(/\d+$/);
 					if (id) {
 						id = id[0];
+					}
+					if (books.length < 1) {
+						books = povBooks;
 					}
 					return { id, name, books };
 				});
@@ -146,6 +149,8 @@ class App extends React.Component {
 					cards={playerCards}
 					playerTeam={playerTeam}
 					gameOver={gameOver}
+					playerScore={playerScore}
+					cpuScore={cpuScore}
 					handleCardClick={this.handleCardClick.bind(this)}
 					handlePlayAgainClick={this.handlePlayAgainClick.bind(this)}
 				/>

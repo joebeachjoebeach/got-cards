@@ -3,17 +3,38 @@ import ClickableCard from '../clickable-card/clickable-card';
 import { getTeamName } from '../../functions';
 import './hand.css';
 
-const Hand = ({ cards, playerTeam, gameOver, handleCardClick, handlePlayAgainClick }) => {
+const Hand = ({ cards, playerTeam, gameOver, handleCardClick, handlePlayAgainClick, playerScore, cpuScore }) => {
+
+	let winStatement = 'Tie Game';
+	if (playerScore > cpuScore) {
+		winStatement = 'You Win';
+	}
+	else if (cpuScore > playerScore) {
+		winStatement = 'CPU Wins';
+	}
 
 	function onPlayAgainClick() {
 		handlePlayAgainClick();
+	}
+
+	function renderPlayAgain() {
+		return (
+			<div className="hand-gameover">
+				<div className="hand-gameover-score">
+					<h5>{winStatement}</h5>
+					<p>You: {playerScore}</p>
+					<p>CPU: {cpuScore}</p>
+				</div>
+				<button className="hand-gameover-button" onClick={onPlayAgainClick}>Play Again</button>
+			</div>
+		);
 	}
 
 	const team = getTeamName(playerTeam);
 
 	return (
 		<div className="hand">
-			{gameOver && <button className="hand-button" onClick={onPlayAgainClick}>Play Again</button>}
+			{gameOver && renderPlayAgain()}
 			{!gameOver && cards.length < 1 && playerTeam && <div>Loading...</div>}
 			{cards.map(data => {
 				return (
@@ -30,5 +51,3 @@ const Hand = ({ cards, playerTeam, gameOver, handleCardClick, handlePlayAgainCli
 };
 
 export default Hand;
-
-// const houseIds = [ '7', '17', '229', '285', '362', '378', '395', '398' ];
