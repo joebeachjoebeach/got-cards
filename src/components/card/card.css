@@ -1,14 +1,15 @@
 .card {
 	align-items: center;
+	border-radius: 4px;
 	display: flex;
 	flex-direction: column;
 	height: 100%;
 	justify-content: space-between;
-	width: 100%;
 }
 
 	.card-title {
 		font-size: 0.9rem;
+		height: 34px;
 		margin: 2px;
 		text-align: center;
 	}
@@ -21,11 +22,52 @@
 
 		.card-data-score {
 			align-self: center;
-			font-size: 2.5rem;
+			font-size: 2rem;
 		}
 
 		.card-data-info {
-			font-size: 0.9rem;
+			font-size: 0.85rem;
+			font-weight: lighter;
 			margin: 2px;
 			text-align: center;
 		}
+
+.arryn {
+	background-color: #081323;
+	color: #E1DBC5;
+}
+
+.baratheon {
+	background-color: #FFCD49;
+	color: #262120;
+}
+
+.lannister {
+	background-color: #880711;
+	color: #E1DBC5;
+}
+
+.martell {
+	background-color: #F1844A;
+	color: #FBE1B4;
+}
+
+.stark {
+	background-color: #D5CEB6;
+	color: #6D6D6D;
+}
+
+.targaryen {
+	background-color: #222223;
+	color: #E1DBC5;
+}
+
+.tully {
+	background-color: #21244B;
+	color: #E1DBC5;
+}
+
+.tyrell {
+	background-color: #8BA17F;
+	color: #EED7A5;
+}

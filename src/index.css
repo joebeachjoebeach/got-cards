@@ -5,15 +5,20 @@ p {
 }
 
 html, body {
+	background-color: #FFF1D0;
 	font-weight: lighter;
 	height: 100%;
 	width: 100%;
 }
 
 body {
-	font-family: sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
   margin: 0;
   padding: 0;
+}
+
+button {
+	border: none;
 }
 
 .root {

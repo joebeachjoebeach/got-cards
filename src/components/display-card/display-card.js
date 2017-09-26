@@ -1,34 +1,20 @@
 import React from 'react';
-import SwCard from '../sw-card/sw-card';
-import GotCard from '../got-card/got-card';
+import Card from '../card/card';
 import './display-card.css';
 
-const DisplayCard = ({ data, team }) => {
+const DisplayCard = ({ data, team, win }) => {
 
-	function renderCard() {
-		if (team === 'got') {
-			return (
-				<GotCard
-					data={data}
-					key={data.key}
-					id={data.key}
-				/>
-			);
-		}
-		else if (team === 'sw') {
-			return (
-				<SwCard
-					data={data}
-					key={data.key}
-					id={data.key}
-				/>
-			);
-		}
+	if (win) {
+		return (
+			<div className="display-card win">
+				<Card data={data} team={team} />
+			</div>
+		);
 	}
 
 	return (
 		<div className="display-card">
-			{renderCard()}
+			<Card data={data} team={team} />
 		</div>
 	);
 };

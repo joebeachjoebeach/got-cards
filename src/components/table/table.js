@@ -1,32 +1,33 @@
 import React from 'react';
 import DisplayCard from '../display-card/display-card';
+import { getTeamName } from '../../functions';
 import './table.css';
 
-const Table = ({ playerCard, computerCard, playerTeam }) => {
+const Table = ({ playerCard, cpuCard, playerTeam, cpuTeam }) => {
 
-	const computerTeam = playerTeam === 'sw' ? 'got' : 'sw';
+	const playerTeamName = getTeamName(playerTeam);
+	const cpuTeamName = getTeamName(cpuTeam);
 
 	function renderTable() {
-		if (playerCard) {
-			return (
-				<div className="table">
-					<DisplayCard
-						data={playerCard}
-						team={playerTeam}
-					/>
-					<DisplayCard
-						data={computerCard}
-						team={computerTeam}
-					/>
-				</div>
-			);
-		}
-		return <div className="table" />;
+		return (
+			<div className="table-cards">
+				<DisplayCard
+					data={playerCard}
+					team={playerTeamName}
+					win={playerCard.books.length > cpuCard.books.length}
+				/>
+				<DisplayCard
+					data={cpuCard}
+					team={cpuTeamName}
+					win={cpuCard.books.length > playerCard.books.length}
+				/>
+			</div>
+		);
 	}
 
 	return (
 		<div className="table">
-			{renderTable()}
+			{playerCard && renderTable()}
 		</div>
 	);
 	

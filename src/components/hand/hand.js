@@ -1,23 +1,27 @@
 import React from 'react';
 import ClickableCard from '../clickable-card/clickable-card';
+import { getTeamName } from '../../functions';
 import './hand.css';
 
-const Hand = ({ cards, team, handleCardClick }) => {
+const Hand = ({ cards, playerTeam, gameOver, handleCardClick, handlePlayAgainClick }) => {
 
-	if (cards.length < 1) {
-		return <div className="hand">Loading...</div>;
+	function onPlayAgainClick() {
+		handlePlayAgainClick();
 	}
+
+	const team = getTeamName(playerTeam);
 
 	return (
 		<div className="hand">
+			{gameOver && <button className="hand-button" onClick={onPlayAgainClick}>Play Again</button>}
+			{!gameOver && cards.length < 1 && playerTeam && <div>Loading...</div>}
 			{cards.map(data => {
 				return (
 					<ClickableCard
 						data={data}
-						key={data.key}
-						id={data.key}
-						handleCardClick={handleCardClick}
+						key={data.id}
 						team={team}
+						handleCardClick={handleCardClick}
 					/>
 				);
 			})}
@@ -26,3 +30,5 @@ const Hand = ({ cards, team, handleCardClick }) => {
 };
 
 export default Hand;
+
+// const houseIds = [ '7', '17', '229', '285', '362', '378', '395', '398' ];

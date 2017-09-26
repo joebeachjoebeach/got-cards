@@ -6,11 +6,8 @@ const Header = () => {
 	return (
 		<header>
 			<div className="header-title">
-				Star Wars vs Game of Thrones
+				Game of Thrones Card Game
 			</div>
-			<button className="header-button">
-				Restart
-			</button>
 		</header>
 	);
 };

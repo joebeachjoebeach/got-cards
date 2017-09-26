@@ -1,9 +1,16 @@
 .display-card {
-	border: 1px solid black;
+	border: none;
 	border-radius: 4px;
+	box-shadow: 0 3px 4px #E8DDB5;
 	cursor: pointer;
-	height: 50%;
 	margin: 0.83%;
-	min-height: 130px;
+	max-height: 240px;
+	max-width: 175px;
+	min-height: 140px;
+	min-width: 120px;
 	width: 30%;
+}
+
+.win {
+	box-shadow: 0 5px 20px #913F40;
 }

@@ -4,9 +4,7 @@ import Header from '../header/header';
 import Banner from '../banner/banner';
 import Table from '../table/table';
 import Hand from '../hand/hand';
-import { randomInt, getHouse, getCharacter, mapCards } from '../../functions/';
-import map from 'lodash/map';
-import omit from 'lodash/omit';
+import { randomInt, getHouse, getCharacter } from '../../functions/';
 import './app.css';
 
 class App extends React.Component {
@@ -17,17 +15,14 @@ class App extends React.Component {
 			playerTeam: '',
 			playerCards: [],
 			playerScore: 0,
-
 			cpuTeam: '',
 			cpuCards: [],
-			cpuScore: 0
+			cpuScore: 0,
+			gameOver: false
 		};
 	}
 
-	handleChooseHouse(id) {
-		// api ids for all the houses
-		const houseIds = [ '7', '17', '229', '285', '362', '378', '395', '398' ];
-		// get the sworn members of the house
+	dealCards(id, callback) {
 		getHouse(id).then(({ swornMembers }) => {
 			const characters = [];
 			// get six random sworn members' urls
@@ -36,113 +31,125 @@ class App extends React.Component {
 				characters.push(swornMembers[randomIndex]);
 				swornMembers.splice(randomIndex, 1);
 			}
-			// get the sworn members from their urls
-			characters.forEach(character => {
-				getCharacter(character).then(({ name, aliases, books }) => {
+			// make an array of promises for the character requests
+			const promises = characters.map(character => getCharacter(character));
+			// once all promises are resolved, process the data
+			Promise.all(promises).then(data => {
+				const cards = data.map(({ url, name, books, aliases }) => {
 					if (name === '') {
 						name = aliases[0];
 					}
-					const card = { name, books };
-					const updatedCards = this.state.playerCards.slice();
-					updatedCards.push(card);
-					this.setState({ playerCards: updatedCards, playerTeam: id });
+					let id = url.match(/\d+$/);
+					if (id) {
+						id = id[0];
+					}
+					return { id, name, books };
 				});
+				callback(cards);
 			});
 		});
+	}
 
-		// remove the chosen id
+	handleHouseClick(id) {
+		// api ids for all the houses
+		const houseIds = [ '7', '17', '229', '285', '362', '378', '395', '398' ];
+		// choose a house for the cpu
 		houseIds.splice(houseIds.indexOf(id), 1);
-		// get a random team from the remaining teams for the computer
 		const randomIndex = randomInt(0, houseIds.length - 1);
 		const cpuId = houseIds[randomIndex];
 
-		// abstract the below code out to a separate function to be run
-		// both for player and cpu
-		getHouse(cpuId).then(({ swornMembers }) => {
-			const characters = [];
-			for (let j = 0; j < 6; j++) {
-				const randomIndex = randomInt(0, swornMembers.length - 1);
-				characters.push(swornMembers[randomIndex]);
-				swornMembers.splice(randomIndex, 1);
-			}
-			// get the sworn members from their urls
-			characters.forEach(character => {
-				getCharacter(character).then(({ name, aliases, books }) => {
-					if (name === '') {
-						name = aliases[0];
-					}
-					const card = { name, books };
-					const updatedCards = this.state.playerCards.slice();
-					updatedCards.push(card);
-					this.setState({ cpuCards: updatedCards, cpuTeam: cpuId });
-				});
-			});
-		});
+		this.setState({ playerTeam: id, cpuTeam: cpuId });
 
+		// deal the player's cards
+		this.dealCards(id, (cards) => {
+			this.setState({ playerCards: cards });
+		});
+		// deal the cpu cards
+		this.dealCards(cpuId, (cards) => {
+			this.setState({ cpuCards: cards });
+		});
 	}
 
-	handleCardClick(id) {
-		// get player's selected card
-		const playerCard = this.state[this.state.team][id];
-		const _playerTeamState = omit(this.state[this.state.team], [id]);
+	handleCardClick(cardName) {
+		// take the chosen card out of the player's hand
+		const playerHand = this.state.playerCards.slice();
+		const playerCard = playerHand.find(({ name }) => name === cardName);
+		const newPlayerHand = playerHand.filter(({ name }) => name !== cardName);
 
 		// get random computer card
-		const computerTeam = this.state.team === 'sw' ? 'got' : 'sw';
-		const computerArray = map(this.state[computerTeam], mapCards);
-		const randomIndex = randomInt(0, computerArray.length - 1);
-		const computerCard = computerArray[randomIndex];
-		const _computerTeamState = omit(this.state[computerTeam], [computerCard.key]);
+		const cpuHand = this.state.cpuCards.slice();
+		const randomIndex = randomInt(0, cpuHand.length - 1);
+		const cpuCard = cpuHand[randomIndex];
+		const newCpuHand = cpuHand.filter(({ name }) => name !== cpuCard.name);
 
-		// calculate scoring
-		let playerScore, computerScore;
-		if (this.state.team === 'sw') {
-			playerScore = Math.round((playerCard.films.length / 7) * 100);
-			computerScore = (computerCard.books.length / 5) * 100;
+		// scoring
+		let { playerScore, cpuScore } = this.state;
+		if (playerCard.books.length > cpuCard.books.length) {
+			playerScore += 1;
 		}
-		else if (this.state.team === 'got') {
-			playerScore = (playerCard.books.length / 5) * 100;
-			computerScore = Math.round((computerCard.films.length / 7) * 100);
-		}
-		let { player, computer } = this.state.score;
-		if (playerScore > computerScore) {
-			player = player + 12;
-		}
-		else if (computerScore > playerScore) {
-			computer = computer + 12;
+		else if (cpuCard.books.length > playerCard.books.length) {
+			cpuScore += 1;
 		}
 
-		// update state with new info
+		let gameOver = false;
+		if (newPlayerHand.length < 1) {
+			gameOver = true;
+		}
+
 		this.setState({
+			playerCards: newPlayerHand,
+			cpuCards: newCpuHand,
 			playerCard,
-			computerCard,
-			[this.state.team]: _playerTeamState,
-			[computerTeam]: _computerTeamState,
-			score: { player, computer }
+			cpuCard,
+			playerScore,
+			cpuScore,
+			gameOver
 		});
 	}
 
 	handlePlayAgainClick() {
 		this.setState({
-			sw: {},
-			got: {},
-			round: 0,
-			team: null,
+			playerTeam: '',
+			playerCards: [],
+			playerScore: 0,
+			cpuTeam: '',
+			cpuCards: [],
+			cpuScore: 0,
+			gameOver: false,
 			playerCard: null,
-			computerCard: null,
-			score: {
-				player: 0,
-				computer: 0
-			}
+			cpuCard: null
 		});
 	}
 
 	render() {
-		const { playerScore, cpuScore, playerTeam } = this.state;
+		const {
+			playerScore,
+			playerCards,
+			playerTeam,
+			playerCard,
+			cpuScore,
+			cpuCard,
+			cpuTeam,
+			gameOver
+		} = this.state;
 		return (
 			<div className="app">
 				<Header />
 				<Banner score={{ player: playerScore, cpu: cpuScore }} />
-				{!playerTeam && <Intro handleChooseHouse={this.handleChooseHouse.bind(this)} />}
+				<Table
+					playerCard={playerCard}
+					cpuCard={cpuCard}
+					playerTeam={playerTeam}
+					cpuTeam={cpuTeam}
+				/>
+				<Hand 
+					cards={playerCards}
+					playerTeam={playerTeam}
+					gameOver={gameOver}
+					handleCardClick={this.handleCardClick.bind(this)}
+					handlePlayAgainClick={this.handlePlayAgainClick.bind(this)}
+				/>
+				{!playerTeam && <Intro handleHouseClick={this.handleHouseClick.bind(this)} />}
 			</div>
 		);
 	}

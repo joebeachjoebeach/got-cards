@@ -28,6 +28,8 @@ export function randomInt(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+
+// unused?
 export function mapCards(data, key) {
 	// Star Wars:
 	if (data.films) {
@@ -38,5 +40,32 @@ export function mapCards(data, key) {
 	else {
 		const { name, books } = data;
 		return { key, name, books };
+	}
+}
+
+export function getTeamName(teamId) {
+	if (teamId === '7') {
+		return 'arryn';
+	}
+	if (teamId === '17') {
+		return 'baratheon';
+	}
+	if (teamId === '229') {
+		return 'lannister';
+	}
+	if (teamId === '285') {
+		return 'martell';
+	}
+	if (teamId === '362') {
+		return 'stark';
+	}
+	if (teamId === '378') {
+		return 'targaryen';
+	}
+	if (teamId === '395') {
+		return 'tully';
+	}
+	if (teamId === '398') {
+		return 'tyrell';
 	}
 }

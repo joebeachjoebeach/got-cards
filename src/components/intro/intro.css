@@ -11,16 +11,23 @@
 
 	.modal-content {
 		align-items: center;
-		background-color: #EEEEEE;
+		background-color: #FFF1D0;
 		border: none;
 		border-radius: 6px;
 		display: flex;
 		flex-direction: column;
-		height: 300px;
+		height: 400px;
 		margin: 15% auto;
 		max-width: 500px;
 		width: 90%;
 	}
+
+		.modal-content-title {
+			border-bottom: 1px solid #444;
+			color: #333;
+			text-align: center;
+			width: 80%;
+		}
 
 		.modal-content-teamchoice {
 			align-items: center;
@@ -31,9 +38,20 @@
 		}
 
 			.modal-content-teamchoice-button {
+				align-items: center;
+				background-color: #FFF6E2;
+				border: none;
 				border-radius: 4px;
-				box-shadow: 0 3px 1px #AAA;
+				box-shadow: 0 3px 5px #E8DDB5;
 				cursor: pointer;
+				display: flex;
+				flex-direction: column;
 				margin: 10px;
 				padding: 10px;
+				width: 72px;
 			}
+
+				.modal-content-teamchoice-button-image {
+					border-radius: 4px;
+					margin: 0 0 5px 0;
+				}

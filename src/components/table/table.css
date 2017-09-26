@@ -1,7 +1,11 @@
 .table {
-	display: flex;
 	height: 33%;
-	justify-content: center;
 	margin: 10px 0 0 0;
 	width: 100%;
 }
+
+	.table-cards {
+		display: flex;
+		height: 90%;
+		justify-content: center;
+	}
