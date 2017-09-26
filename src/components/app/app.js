@@ -43,8 +43,8 @@ class App extends React.Component {
 					if (id) {
 						id = id[0];
 					}
-					if (books.length < 1) {
-						books = povBooks;
+					if (povBooks.length > 0) {
+						povBooks.forEach(book => { books.push(book); });
 					}
 					return { id, name, books };
 				});
